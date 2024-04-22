@@ -1,5 +1,5 @@
-<<<<<<< HEAD
+
 # todo-flask
-=======
-This is a simple todo app. Developed using Flask and Mongodb
->>>>>>> ea13b39 (Create README)
+
+This is a Flask application with connection to MongoDB for our database. It allows users to add and delete todo items.
+
