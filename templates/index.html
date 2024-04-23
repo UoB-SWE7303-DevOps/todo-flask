@@ -45,20 +45,29 @@
         <ul class="todo">
 		{% for todo in todos %}
         
-            <li>
+            <li class="{{ 'completed' if todo ['complete'] else ''}}">
 	    <!--Fetching a todo-->
 		<p> {{ todo['task'] }} <i>
 			({{ todo['degree'] }})</i> 
 		</p>
-        </li>
+        <!-- Mark as complete/incomplete -->
+        <form method="POST" action="{{ url_for('complete', id=todo['_id']) }}">
+            <input type="submit" value="{{ 'Mark Incomplete' if todo['complete'] else 'Mark Complete' }}">
+        </form>
+        <!-- Editing a todo -->
+        <form method="GET" action="{{ url_for('edit', id=todo['_id']) }}">
+            <input type="submit" value="Edit Task">
+        </form>
+        
 		<!-- Deleting a todo -->
 		<form method="POST" 
 			  action="{{ url_for('delete', id=todo['_id']) }}">
 		<input 
 			  type="submit"
-			  value="delete task"
+			  value="Delete Task"
 			  />
 		</form>
+        </li>
     
 		{% endfor %}
     </ul>
