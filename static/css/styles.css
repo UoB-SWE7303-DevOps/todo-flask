@@ -1,5 +1,5 @@
 
-body, h1 {
+body {
     margin:0;
     padding: 0;
 }
@@ -20,6 +20,12 @@ h1 {
     margin: 0 auto;
     padding: 20px;
 }
+.form-container {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 40vh; 
+}
 
 form {
     background-color: #f9f9f9;
@@ -37,7 +43,7 @@ label {
 }
 
 input[type="text"] {
-    width: 100%;
+    width: 80%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;

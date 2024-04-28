@@ -1,7 +1,9 @@
 
-from flask import Flask, render_template, request, url_for, redirect 
+from flask import Flask, render_template, request, url_for, redirect, session
 from pymongo import MongoClient
 from bson.objectid import ObjectId
+from werkzeug.security import generate_password_hash, check_password_hash
+# import jwt
 
 app = Flask(__name__)
 
@@ -10,19 +12,53 @@ app = Flask(__name__)
 client = MongoClient('localhost', 27017)
 db = client.task_database 
 todos = db.todos 
+users = db.users
+
+app.secret_key = 'mysecret'
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        existing_user = users.find_one({'username': request.form['username']})
+
+        if existing_user is None:
+            hashpass = generate_password_hash(request.form['password'], method='pbkdf2:sha256')
+            users.insert_one({'username': request.form['username'], 'password': hashpass})
+            return redirect(url_for('login'))
+        
+        return 'You are already logged in'
+    return render_template('register.html')
+
+@app.route('/', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        login_user = users.find_one({'username': request.form['username']})
+
+        if login_user:
+            if check_password_hash(login_user['password'], request.form['password']):
+                session['username'] = request.form['username']
+                session['user_id'] = str(login_user['_id'])
+                return redirect(url_for('todos'))
+
+        return 'Invalid username/password combination'
+
+    return render_template('login.html')
 
 
 # Get and Post 
-@app.route("/", methods=('GET', 'POST'))
-def index():
-    if request.method == "POST":  
-        task = request.form['task']
-        degree = request.form['degree']
-        todos.insert_one({'task': task, 'degree': degree, 'complete': False})
-        return redirect(url_for('index')) 
-    all_todos = todos.find()   
-    
-    return render_template('index.html', todos = all_todos)
+@app.route('/todos', methods=['GET', 'POST'])
+def todos():
+    if 'username' in session:
+        if request.method == 'POST':
+            title = request.form['task']
+            degree = request.form['degree']
+            todos.insert_one({'task': title, 'degree': degree, 'complete': False, 'user_id': session['user_id']})
+            return redirect(url_for('todos'))
+
+        user_todos = todos.find({'user_id': session['user_id']})
+        return render_template('index.html', todos=user_todos)
+    else:
+        return redirect(url_for('login'))
 
 @app.route("/<id>/edit/", methods=('GET', 'POST'))
 def edit(id):

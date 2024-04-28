@@ -45,7 +45,8 @@
         <ul class="todo">
 		{% for todo in todos %}
         
-            <li class="{{ 'completed' if todo ['complete'] else ''}}">
+        <li class="{{ 'completed' if todo['complete'] else '' }}">
+
 	    <!--Fetching a todo-->
 		<p> {{ todo['task'] }} <i>
 			({{ todo['degree'] }})</i> 
