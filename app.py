@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, url_for, redirect, session
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash
-# import jwt
+
 
 app = Flask(__name__)
 
