@@ -11,7 +11,7 @@ app = Flask(__name__)
 # Create client and db
 client = MongoClient('localhost', 27017)
 db = client.task_database 
-todos = db.todos 
+todos_collection = db.todos 
 users = db.users
 
 app.secret_key = 'mysecret'
@@ -52,38 +52,38 @@ def todos():
         if request.method == 'POST':
             title = request.form['task']
             degree = request.form['degree']
-            todos.insert_one({'task': title, 'degree': degree, 'complete': False, 'user_id': session['user_id']})
+            todos_collection.insert_one({'task': title, 'degree': degree, 'complete': False, 'user_id': session['user_id']})
             return redirect(url_for('todos'))
 
-        user_todos = todos.find({'user_id': session['user_id']})
+        user_todos = todos_collection.find({'user_id': session['user_id']})
         return render_template('index.html', todos=user_todos)
     else:
         return redirect(url_for('login'))
 
 @app.route("/<id>/edit/", methods=('GET', 'POST'))
 def edit(id):
-    todo = todos.find_one({"_id": ObjectId(id)})
+    todo = todos_collection.find_one({"_id": ObjectId(id)})
     
     if request.method == 'POST':
         new_task = request.form['task']
         new_degree = request.form['degree']
-        todos.update_one({"_id": ObjectId(id)}, {"$set": {'task': new_task, 'degree': new_degree}})
-        return redirect(url_for('index'))
+        todos_collection.update_one({"_id": ObjectId(id)}, {"$set": {'task': new_task, 'degree': new_degree}})
+        return redirect(url_for('todos'))
     
     return render_template('edit.html', todo=todo)
 #Delete 
 @app.post("/<id>/delete/")
 def delete(id): 
-    todos.delete_one({"_id":ObjectId(id)}) 
-    return redirect(url_for('index')) 
+    todos_collection.delete_one({"_id":ObjectId(id)}) 
+    return redirect(url_for('todos')) 
 
 
 # Complete
 @app.route("/<id>/complete/", methods=['GET'])
 def complete(id):
-    todo = todos.find_one({"_id": ObjectId(id)})
-    todos.update_one({"_id": ObjectId(id)}, {"$set": {'complete': not todo['complete']}})
-    return redirect(url_for('index'))
+    todo = todos_collection.find_one({"_id": ObjectId(id)})
+    todos_collection.update_one({"_id": ObjectId(id)}, {"$set": {'complete': not todo['complete']}})
+    return redirect(url_for('todos'))
 
 if __name__ == "__main__":
     app.run(debug=True)# the server will automatically reload for code changes and show a debugger in case an exception happened.
