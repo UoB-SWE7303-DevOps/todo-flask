@@ -82,8 +82,17 @@ def delete(id):
 @app.route("/<id>/complete/", methods=['GET'])
 def complete(id):
     todo = todos_collection.find_one({"_id": ObjectId(id)})
+    new_status = not todo['complete']
     todos_collection.update_one({"_id": ObjectId(id)}, {"$set": {'complete': not todo['complete']}})
     return redirect(url_for('todos'))
+
+@app.route('/logout', methods=['GET', 'POST'])
+def logout():
+    # Clear the session
+    session.pop('username', None)
+    session.pop('user_id', None)
+    return redirect(url_for('login'))
+
 
 if __name__ == "__main__":
     app.run(debug=True)# the server will automatically reload for code changes and show a debugger in case an exception happened.
