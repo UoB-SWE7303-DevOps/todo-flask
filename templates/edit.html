@@ -3,13 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Edit To-Do</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/styles.css')}}"/>
 </head>
 <body>
     <h2>Edit To-Do</h2>
+    <div class="form-container">
     <form method="post" action="/{{ todo._id }}/edit/">
         <input type="text" name="task" value="{{ todo.task }}" required>
         <input type="text" name="degree" value="{{ todo.degree }}" required>
-        <input type="submit" value="Update">
+        <button type="submit" >Update</button>
     </form>
+    </div>
 </body>
 </html>

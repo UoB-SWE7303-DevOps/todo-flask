@@ -45,16 +45,14 @@
         <ul class="todo">
 		{% for todo in todos %}
         
-        <li class="{{ 'completed' if todo['complete'] else '' }}">
-
-	    <!--Fetching a todo-->
-		<p> {{ todo['task'] }} <i>
-			({{ todo['degree'] }})</i> 
-		</p>
-        <!-- Mark as complete/incomplete -->
-        <form method="POST" action="{{ url_for('complete', id=todo['_id']) }}">
-            <input type="submit" value="{{ 'Mark Incomplete' if todo['complete'] else 'Mark Complete' }}">
-        </form>
+        <li>
+            <form action="{{ url_for('complete', id=todo['_id']) }}" method="GET">
+                <span>{{ todo['task'] }}</span>
+                <span><i>{{ todo['degree'] }}</i></span><br>
+                <input type="checkbox" name="complete" {% if todo['complete'] %} checked {% endif %}>
+                
+                <input type="submit" value="Mark as Complete">
+            </form>
         <!-- Editing a todo -->
         <form method="GET" action="{{ url_for('edit', id=todo['_id']) }}">
             <input type="submit" value="Edit Task">
@@ -72,6 +70,13 @@
     
 		{% endfor %}
     </ul>
+    <!-- log out -->
+{% if 'username' in session %}
+<form action="{{ url_for('logout') }}" method="post">
+    <button type="submit">Logout</button>
+</form>
+{% endif %}
+
         
     </div>
 </body>
