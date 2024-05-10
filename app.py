@@ -86,13 +86,9 @@ def complete(id):
     todos_collection.update_one({"_id": ObjectId(id)}, {"$set": {'complete': not todo['complete']}})
     return redirect(url_for('todos'))
 
-<<<<<<< HEAD
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
     # Clear the session
     session.pop('username', None)
     session.pop('user_id', None)
     return redirect(url_for('login'))
-=======
-
->>>>>>> developer
