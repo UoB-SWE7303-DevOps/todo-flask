@@ -1,4 +1,4 @@
-
+import os
 from flask import Flask, render_template, request, url_for, redirect, session
 from pymongo import MongoClient
 from bson.objectid import ObjectId
@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 
 # Create client and db
-client = MongoClient('localhost', 27017)
+client = MongoClient(os.environ.get('MONGO_URI'))
 db = client.task_database 
 todos_collection = db.todos 
 users = db.users
@@ -92,7 +92,3 @@ def logout():
     session.pop('username', None)
     session.pop('user_id', None)
     return redirect(url_for('login'))
-
-
-if __name__ == "__main__":
-    app.run(debug=True)# the server will automatically reload for code changes and show a debugger in case an exception happened.
