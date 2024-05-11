@@ -15,7 +15,6 @@ RUN pip install --upgrade pip && \
 # Copy the current directory contents into the container at /app
 COPY . /app
 
-<<<<<<< HEAD
 
 # Make port 5000 available to the world outside this container
 EXPOSE 5000
@@ -27,10 +26,8 @@ ENV FLASK_ENV=production
 #CMD ["pipenv", "run", "flask", "run", "--host=0.0.0.0"]
 
 
-=======
 # Make port 5000 available to the world outside this container
 EXPOSE 5000
 
 # Run the application with Gunicorn
->>>>>>> developer
 CMD ["pipenv", "run", "gunicorn", "-b", "0.0.0.0:5000", "app:app"]

@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 version: "3.8"
-=======
-version: '3.8'
->>>>>>> developer
 
 services:
   web:
@@ -14,11 +10,7 @@ services:
     depends_on:
       - db
     environment:
-<<<<<<< HEAD
-      MONGO_URI: mongodb://db:27017/task_database  # Connection URI for MongoDB
-=======
       MONGO_URI: mongodb://db:27017/task_database
->>>>>>> developer
 
   db:
     image: mongo
@@ -29,3 +21,4 @@ services:
 
 volumes:
   mongo-data:
+
