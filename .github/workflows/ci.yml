@@ -19,6 +19,6 @@ jobs:
       run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
       
     - name: Build the Docker image
-      run: docker build -t uob-swe7303-devops/todo-flask .
+      run: docker build -t thetahirzafar/todo-flask .
     - name: Push to Dockerhub
-      run: docker push uob-swe7303-devops/todo-flask:latest
+      run: docker push thetahirzafar/todo-flask:latest
