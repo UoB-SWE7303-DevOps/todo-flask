@@ -14,7 +14,7 @@ jobs:
 
     steps:
     - name: Pull Docker image
-      run: sudo docker pull uob-swe7303-devops/todo-flask:latest
+      run: sudo docker pull thetahirzafar/todo-flask
     - name: Delete Old docker container
       run: sudo docker rm -f todo-flask-container || true
     - name: Run Docker Container
