@@ -4,7 +4,7 @@ from pymongo import MongoClient
 from bson.objectid import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash
 
-#THERE IS NO REQUIREMENTS FILE hange
+#THERE IS NO REQUIREMENTS FILE update
 
 app = Flask(__name__)
 
